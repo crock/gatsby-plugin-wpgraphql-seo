@@ -24,6 +24,22 @@ npm install gatsby-plugin-wpgraphql-seo
 
 <a href="https://www.buymeacoffee.com/hafowuvo" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 40px !important;width: auto !important;" ></a>
 
+### Optional Configuration Options
+
+```js
+module.exports = {
+    plugins: [
+        {
+            resolve: 'gatsby-plugin-wpgraphql-seo'
+            options: {
+                discourageSearchEngines: false; // defaults to true
+            }
+        }
+        ...
+    ]
+}
+```
+
 ### Setup Gatsby
 
 In your sites layout setup the context provider to pass the component your general site settings.
@@ -188,7 +204,9 @@ const Blog = ({ data }) => {
         <>
             <Seo
                 title="Blog Title"
-                postSchema={JSON.parse(data.wp.seo.contentTypes.post.schema.raw)}
+                postSchema={JSON.parse(
+                    data.wp.seo.contentTypes.post.schema.raw
+                )}
             />
             <p>Rest of page</p>
         </>

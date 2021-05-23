@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { getSrc } from 'gatsby-plugin-image';
+import { graphql, useStaticQuery } from 'gatsby';
 
 import SEOContext from './SeoContext';
 
@@ -34,6 +35,13 @@ interface IPageSchemaItems {
 }
 
 const SEO: FC<SeoProps> = ({ post = {}, meta = [], title, postSchema }) => {
+    const { settings } = useStaticQuery(graphql`
+        {
+            settings: wpGraphQlSeoSettings {
+                discourageSearchEngines
+            }
+        }
+    `);
     const { seo } = post;
 
     // If manually passed or try get from post data
@@ -88,7 +96,7 @@ const SEO: FC<SeoProps> = ({ post = {}, meta = [], title, postSchema }) => {
     const metaTitle = title || seo.title;
     const metaDescription = seo?.metaDesc ? seo.metaDesc : '';
 
-    const robotsIndex = seo?.metaRobotsNoindex === 'noindex' ? 'noindex' : 'index';
+    const robotsIndex = settings.discourageSearchEngines ? 'noindex' : 'index';
     const robotsFollow = seo?.metaRobotsNofollow === 'nofollow' ? 'nofollow' : 'follow';
 
     const getReadingTime = time => (time === 1 ? '1 minute' : `${time} minutes`);
